@@ -1,24 +1,27 @@
 ﻿using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GridObjects
+public enum Block
 {
-    empty = 48,
-    floor = 49,
-    wall = 50
+    empty = '0', //char 0
+    floor = '1', //char 1
+    wall = '2'   //char 2
 }
  
 public class Toolbox : MonoBehaviour //Singleton<Toolbox>
 {
+
     public GameObject floor;
     public GameObject wall;
+    
+    public GameBoard gameBoard;
 
     // Used to track any global components added at runtime.
     private Dictionary<string, Component> m_Components = new Dictionary<string, Component>();
 
-    private GridObjects[,] GameBoard;
  
  
     // Prevent constructor use.
@@ -27,87 +30,46 @@ public class Toolbox : MonoBehaviour //Singleton<Toolbox>
  
     private void Awake()
     {
+        Global_Object_Manager.toolbox = this;
         this.initGameBoard();
         this.loadGameObjectsFromGrid();
     }
  
     private void initGameBoard()
     {
-        //TODO: Load data from save file instead of creating from scratch
+        //TODO: remove hardcoded save file
         string path = "Assets/Saves/test_map.xml";
 
-        this.GameBoard = new GridObjects[100, 100];
-
         //Read the text from directly from the test.txt file
-        StreamReader reader = new StreamReader(path); 
-        int x = 0;
-        int y = 0;
-        char cell;
-        while (!reader.EndOfStream)
-        {
-            cell = (char)reader.Read();
+        StreamReader mapFile = new StreamReader(path);
 
-            Debug.Log(Convert.ToInt32(cell));
+        this.gameBoard = new GameBoard(mapFile);
 
-            //detect newline
-            if (Convert.ToInt32(cell) == 10)
-            {
-                Debug.Log("new line");
-                if (x != 100)
-                {
-                    Debug.LogError("Error: Attempted to load malformed map file! Line " + y + "is too wide");
-                    Application.Quit();
-                }
-                x = 0;
-                y ++;
-            }
-            else
-            {
-                //Debug.Log("(" + x + ", " + y + ")");
-                this.GameBoard[x, y] = (GridObjects)(int)cell;
-                x ++;
-            }
-            if (x == 101)
-            {
-                Debug.Log("Overrun");
-                break;
-            }
-        }
-/*
-        if (x != 100 || y != 100)
-        {
-            Debug.LogError("Error: Attempted to load malformed map file! File is of dimensions: (" + x + ", " + y);
-            Application.Quit();
-        }
+        mapFile.Close();
 
-*/
-        for (int i = 0; i < this.GameBoard.GetLength(0); i++)
-        {
-            for (int j = 0; j < this.GameBoard.GetLength(1); j++)
-            {
-                Debug.Log(this.GameBoard[i,j] + "\t");
-            }
-            Debug.Log("");
-        }
-
-        reader.Close();
+        Debug.Log(this.gameBoard.printableString);
+        Debug.Log("Width: " + this.gameBoard.width);
+        Debug.Log("Height: " + this.gameBoard.height);
     }
 
     private void loadGameObjectsFromGrid()
     {
-        for (int x = 0; x < 100; x++)
+        for (int x = 0; x < this.gameBoard.width; x++)
         {
-            for (int y = 0; y < 100; y++)
+            for (int y = 0; y < this.gameBoard.height; y++)
             {
-                switch (GameBoard[x, y])
+                var gameGrid = GameObject.Find("GameGrid");
+                GameObject block;
+                switch (this.gameBoard.map[x, y])
                 {
-                    case GridObjects.floor:
-                        Instantiate(this.floor, new Vector2(x, y), Quaternion.identity);
+                    case Block.floor:
+                        Debug.Log("Floor at (" + x + ", " + y + ")");
+                        block = Instantiate(this.floor, new Vector2(x, y), Quaternion.identity, gameGrid.transform) as GameObject;
                         break;
-                    case GridObjects.wall:
-                        Instantiate(this.wall, new Vector2(x, y), Quaternion.identity);
+                    case Block.wall:
+                        block = Instantiate(this.wall, new Vector2(x, y), Quaternion.identity, gameGrid.transform) as GameObject;
                         break;
-                    case GridObjects.empty:
+                    case Block.empty:
                     default:
                         break;
                 }
@@ -168,14 +130,30 @@ public class Toolbox : MonoBehaviour //Singleton<Toolbox>
         return null;
     }
 
-    public GridObjects[,] getGameBoard()
+    public GameBoard getGameBoard()
     {
-        return this.GameBoard;
+        return this.gameBoard;
     }
 
     // Function for updating the gameboard from outside the toolbox
-    public void updateGameBoard(int x, int y, GridObjects newObject)
+    public void updateGameBoard(int x, int y, Block newObject)
     {
-        this.GameBoard[x, y] = newObject;
+        //TODO: Add method to GemBoardClass to allow editing
+        //this.gameBoard[x, y] = newObject;
     }
+
+/*
+    public static int[][] boardConverter(Block[,] input)
+    {
+        int[][] output = new int[100][];
+        for (int i = 0; i < input.GetLength(0); i++)
+        {
+            for (int j = 0; j < input.GetLength(1); j++)
+            {
+                Debug.Log("huehue: " + input[i, j]);
+                output[i][j] = input[i, j] == Block.floor ? 1 : 0;
+            }
+        }
+        return output;
+    }*/
 }

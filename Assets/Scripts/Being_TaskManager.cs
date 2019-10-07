@@ -12,29 +12,23 @@ public class Being_TaskManager : MonoBehaviour
 
     private List<Vector2> path;
 
-    int[][] map = new int[][] 
-    {
-        /* 
-        new int[] {0, 1, 0, 0, 0},
-        new int[] {0, 1, 0, 0, 0},	
-        new int[] {0, 1, 0, 0, 0},
-        new int[] {0, 1, 1, 1, 0},
-        new int[] {0, 0, 0, 0, 0}
-        */
-
-        new int[] {0, 0, 0, 0, 0},
-        new int[] {1, 1, 1, 1, 0},	
-        new int[] {1, 0, 0, 0, 0},
-        new int[] {1, 0, 0, 0, 0},
-        new int[] {0, 0, 0, 0, 0}
-    };
-
     // Start is called before the first frame update
     void Start()
     {
-        var start = new int[] {2, 2};
-        var end = new int[] {0, 0};
-        this.path = new Astar(map, start, end, null).result;
+        var map = Global_Object_Manager.toolbox.gameBoard.map;
+        var being = GameObject.Find("Human");
+        var target = GameObject.Find("spr_target");
+        var start = new int[] {(int)being.transform.position.x, (int)being.transform.position.y};
+        var end = new int[] {(int)target.transform.position.x, (int)target.transform.position.y};
+        
+        //var convertedMap = Toolbox.boardConverter(map);
+        //this.path = new Astar(convertedMap, start, end, "Diagonal").result;
+        //Debug.Log("FINAL COUNT: " + this.path.Count);
+        
+        //foreach (Vector2 node in this.path)
+        //{
+            //Debug.Log(node);
+        //}
     }
 
     // Update is called once per frame
@@ -43,11 +37,10 @@ public class Being_TaskManager : MonoBehaviour
         if (this.path.Count > 0)
         {
             Vector2 currentPos = new Vector2(this.transform.position.x, this.transform.position.y);
-            Vector2 currentTarget = new Vector2(path[0].x, -path[0].y);
+            Vector2 currentTarget = new Vector2(path[0].x, path[0].y);
             // Pop coordinate when reached
             if (currentPos == currentTarget)
             {
-                //Debug.Log(currentTarget);
                 path.RemoveAt(0);
             }
 
