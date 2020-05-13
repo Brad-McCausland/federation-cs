@@ -71,8 +71,9 @@ public class GameBoard
 
         this.map = new Block[x+1,y+1];
 
+        // Read through 2d list of blocks and place them in this.map
         x = 0;
-        y = 0;
+        y = list2D.Count - 1;
         foreach(List<Block> row in list2D)
         {
             foreach(Block block in row)
@@ -81,7 +82,7 @@ public class GameBoard
                 x++;
             }
             x = 0;
-            y++;
+            y--;
         }
     }
 
@@ -89,18 +90,36 @@ public class GameBoard
     {
         get
         {
+            var reference = this.traversableMatrix;
             var returnString = "";
 
-            for (int y = 0; y < this.height; y ++)
+            for (int y = 0; y < this.height; y++)
             {
                 for (int x = 0; x < this.width; x++)
                 {
-                    returnString += (char)this.map[x, y];
+                    returnString += reference[x][y];
                 }
                 returnString += "\n";
             }
 
             return returnString;
+        }
+    }
+
+    public int[][] traversableMatrix
+    {
+        get
+        {
+            int[][] output = new int[this.height][];
+            for (int i = 0; i < this.height; i++)
+            {
+                output[i] = new int[this.width];
+                for (int j = 0; j < this.width; j++)
+                {
+                    output[i][j] = this.map[j, i] == Block.floor ? 0 : 1;
+                }
+            }
+            return output;
         }
     }
 

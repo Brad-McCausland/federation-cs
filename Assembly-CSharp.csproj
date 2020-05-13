@@ -55,10 +55,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\grid.cs" />
+     <Compile Include="Assets\GameBoard.cs" />
      <Compile Include="Assets\scr_Game_Grid_manager.cs" />
+     <Compile Include="Assets\Scripts\Astar.cs" />
      <Compile Include="Assets\Scripts\Being_TaskManager.cs" />
-     <Compile Include="Assets\Scripts\scr_Astar.cs" />
      <Compile Include="Assets\Scripts\scr_BackgroundController.cs" />
      <Compile Include="Assets\Scripts\scr_BackgroundParralaxManager.cs" />
      <Compile Include="Assets\Scripts\scr_CameraController.cs" />

@@ -5,7 +5,8 @@ using UnityEngine;
 public class Being_TaskManager : MonoBehaviour
 {
     public Transform target;
-
+    public GameObject SearchMarker;
+    public GameObject TracebackMarker;
     public float WALK_SPEED;
 
     private UnityEngine.AI.NavMeshAgent navComponent;
@@ -15,20 +16,24 @@ public class Being_TaskManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var map = Global_Object_Manager.toolbox.gameBoard.map;
+        var map = Global_Object_Manager.toolbox.gameBoard.traversableMatrix;
         var being = GameObject.Find("Human");
         var target = GameObject.Find("spr_target");
         var start = new int[] {(int)being.transform.position.x, (int)being.transform.position.y};
         var end = new int[] {(int)target.transform.position.x, (int)target.transform.position.y};
         
-        //var convertedMap = Toolbox.boardConverter(map);
-        //this.path = new Astar(convertedMap, start, end, "Diagonal").result;
-        //Debug.Log("FINAL COUNT: " + this.path.Count);
+        var search = new Astar(map, start, end, "Euclidean", false);
+        this.path = search.result;
         
-        //foreach (Vector2 node in this.path)
-        //{
-            //Debug.Log(node);
-        //}
+        // Render debug markers
+        foreach (Vector2 marker in search.searchedMarkers)
+        {
+            GameObject _ = Instantiate(this.SearchMarker, marker, Quaternion.identity) as GameObject;
+        }
+        foreach (Vector2 marker in search.tracebackMarkers)
+        {
+            GameObject _ = Instantiate(this.TracebackMarker, marker, Quaternion.identity) as GameObject;
+        }
     }
 
     // Update is called once per frame

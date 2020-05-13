@@ -46,10 +46,6 @@ public class Toolbox : MonoBehaviour //Singleton<Toolbox>
         this.gameBoard = new GameBoard(mapFile);
 
         mapFile.Close();
-
-        Debug.Log(this.gameBoard.printableString);
-        Debug.Log("Width: " + this.gameBoard.width);
-        Debug.Log("Height: " + this.gameBoard.height);
     }
 
     private void loadGameObjectsFromGrid()
@@ -63,7 +59,6 @@ public class Toolbox : MonoBehaviour //Singleton<Toolbox>
                 switch (this.gameBoard.map[x, y])
                 {
                     case Block.floor:
-                        Debug.Log("Floor at (" + x + ", " + y + ")");
                         block = Instantiate(this.floor, new Vector2(x, y), Quaternion.identity, gameGrid.transform) as GameObject;
                         break;
                     case Block.wall:
@@ -141,19 +136,4 @@ public class Toolbox : MonoBehaviour //Singleton<Toolbox>
         //TODO: Add method to GemBoardClass to allow editing
         //this.gameBoard[x, y] = newObject;
     }
-
-/*
-    public static int[][] boardConverter(Block[,] input)
-    {
-        int[][] output = new int[100][];
-        for (int i = 0; i < input.GetLength(0); i++)
-        {
-            for (int j = 0; j < input.GetLength(1); j++)
-            {
-                Debug.Log("huehue: " + input[i, j]);
-                output[i][j] = input[i, j] == Block.floor ? 1 : 0;
-            }
-        }
-        return output;
-    }*/
 }

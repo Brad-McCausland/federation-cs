@@ -346,11 +346,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88d3fbb5ffc69748b6d4bf7e067d91f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MIN_ZOOM_FACTOR: 3
-  MAX_ZOOM_FACTOR: 9
-  ZOOM_SPEED: 1
-  PAN_SPEED: 0.01
-  ZOOM_PAN_SPEED: 0.005
+  MIN_ZOOM_FACTOR: 0
+  MAX_ZOOM_FACTOR: 0
+  ZOOM_SPEED: 0
+  PAN_SPEED: 0
+  ZOOM_PAN_SPEED: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -547,6 +547,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1785414392}
   - component: {fileID: 1785414393}
+  - component: {fileID: 1785414394}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -582,6 +583,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floor: {fileID: 2964405815209298702, guid: cdcbfc57408aaf242bb91999e811c7bb, type: 3}
   wall: {fileID: 4902747358867966547, guid: 431acfdf1f69d5a4c9d0c5aa1cde20a8, type: 3}
+--- !u!114 &1785414394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785414391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd77dad743a79e046be5f35e1a4cb5ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  result: []
+  searchedMarker: {fileID: 3538529704225505700, guid: 8e1385a1ab6ce894494cdad4be7cfef2,
+    type: 3}
+  tracebackMarker: {fileID: 4446278501003627970, guid: d55c60e658a445546a0946f8d04e3a92,
+    type: 3}
 --- !u!1 &2014196774
 GameObject:
   m_ObjectHideFlags: 0

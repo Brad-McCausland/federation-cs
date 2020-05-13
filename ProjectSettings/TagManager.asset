@@ -54,6 +54,12 @@ TagManager:
   - name: Structures
     uniqueID: 4251490001
     locked: 0
+  - name: Debug - Searched Tiles
+    uniqueID: 573985283
+    locked: 0
+  - name: Debug - Traceback Tiles
+    uniqueID: 3195870363
+    locked: 0
   - name: Beings
     uniqueID: 916051861
     locked: 0

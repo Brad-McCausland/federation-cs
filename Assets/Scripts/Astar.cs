@@ -23,11 +23,14 @@ List<Vector2> path = new Astar(map, start, end, "DiagonalFree").result;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 
-public class Astar
-{
+public class Astar {
 	public List<Vector2> result = new List<Vector2>();
+	public List<Vector2> searchedMarkers = new List<Vector2>();
+	public List<Vector2> tracebackMarkers = new List<Vector2>();
+	
 	private string find;
 	
 	private class _Object {
@@ -161,7 +164,7 @@ public class Astar
 		return Math.Abs(start.x - end.x) + Math.Abs(start.y - end.y);
 	}
 	
-	public Astar (int[][] grid, int[] s, int[] e, string f)
+	public Astar (int[][] grid, int[] s, int[] e, string f, bool debug)
 	{
 		this.find = (f == null) ? "Diagonal" : f;
 		
@@ -210,6 +213,11 @@ public class Astar
 			
 			current = open[min];
 			open.RemoveAt(min);
+
+			if (debug)
+			{
+				this.searchedMarkers.Add( new Vector2(current.x, current.y));
+			}
 			
 			if (current.v != end.v) {
 				--length;
@@ -257,6 +265,10 @@ public class Astar
 				i = length = 0;
 				do {
 					this.result.Add(new Vector2(current.x, current.y));
+					if (debug)
+					{
+						this.tracebackMarkers.Add( new Vector2(current.x, current.y));
+					}
 				}
 				while ((current = current.p) != null);
 				result.Reverse();
